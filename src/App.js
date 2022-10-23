@@ -15,21 +15,21 @@ function App() {
   const [flowers, setFlowers] = useState([]);
 
   const fetchBalance = async (accountAddress) => {
-    indexerClient.lookupAccountByID(accountAddress).do()
-      .then(response => {
-        const _balance = response.account.amount;
-        setBalance(_balance);
-      })
-      .catch(error => {
+  try{
+    const response = await indexerClient.lookupAccountByID(accountAddress).do()
+  
+    const _balance = response.account.amount;
+    setBalance(_balance);}
+      catch(error){
         console.log(error);
-      });
+      };
   };
 
   const connectWallet = async () => {
     myAlgoConnect.connect()
       .then(accounts => {
         const _account = accounts[0];
-        console.log(_account)
+        
         setAddress(_account.address);
         fetchBalance(_account.address);
         getFlowers();
@@ -40,25 +40,26 @@ function App() {
   };
 
   const buyFlower = async (flower) => {
-    buyFlowerAction(address, flower)
-      .then(() => {
-        getFlowers();
-        fetchBalance(address);
-      })
-      .catch(error => {
+  try{
+    await buyFlowerAction(address, flower)
+
+    getFlowers();
+    fetchBalance(address);
+ }
+      catch(error) {
         console.log(error)
-      })
+      }
   };
 
   const editQuantity = async (flower, _quantity) => {
-    editQuantityAction(address, flower, _quantity)
-      .then(() => {
-        getFlowers();
-        fetchBalance(address);
-      })
-      .catch(error => {
-        console.log(error)
-      })
+try {
+  editQuantityAction(address, flower, _quantity)
+  getFlowers();
+  fetchBalance(address);
+} catch (error) {
+  console.log(error)
+}
+
   };
 
   const getFlowers = async () => {
