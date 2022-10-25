@@ -24,6 +24,11 @@ txn NumAppArgs
 int 2
 ==
 &&
+byte "owner"
+app_global_get
+txn Sender
+==
+&&
 assert
 byte "QUANTITY"
 txna ApplicationArgs 1
@@ -38,6 +43,16 @@ int 2
 txn NumAppArgs
 int 1
 ==
+&&
+byte "owner"
+app_global_get
+txn Sender
+!=
+&&
+byte "QUANTITY"
+app_global_get
+int 0
+>
 &&
 assert
 gtxn 1 TypeEnum
@@ -80,10 +95,30 @@ txn Note
 byte "floralart:uv110"
 ==
 assert
+txna ApplicationArgs 0
+len
+int 0
+>
+txna ApplicationArgs 1
+len
+int 0
+>
+&&
+txna ApplicationArgs 2
+len
+int 0
+>
+&&
 txna ApplicationArgs 3
 btoi
 int 0
 >
+&&
+txna ApplicationArgs 4
+btoi
+int 0
+>
+&&
 assert
 byte "name"
 txna ApplicationArgs 0
